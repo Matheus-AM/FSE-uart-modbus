@@ -52,8 +52,8 @@ public:
     uchar getModbusCode(uchar subcode);
     void send_tx(uchar command, const char* msg);
     void recv_rx(uchar command);
-    uchar handleData(uchar* p_tx_buffer, uchar subcode)
-    uchar handleRecv(uchar* p_tx_buffer, uchar subcode)
+    uchar handleData(uchar* p_tx_buffer, uchar subcode);
+    uchar handleRecv(uchar* p_tx_buffer, uchar subcode);
     void close_it();
 };
 

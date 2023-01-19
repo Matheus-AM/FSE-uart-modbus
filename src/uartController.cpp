@@ -77,7 +77,7 @@ uchar UartController::handleData(uchar* p_tx_buffer, uchar subcode){
 uchar UartController::handleRecv(uchar* p_tx_buffer, uchar subcode){
 
     int ctr = 87654;
-    float ctr = 3.1416;
+    float ctrf = 3.1416;
     switch (subcode)
     {
     case SEND_CTR:
@@ -110,7 +110,7 @@ uchar UartController::handleRecv(uchar* p_tx_buffer, uchar subcode){
 
 }
 
-void UartController::send_tx(uchar command, const char* msg){
+int UartController::send_tx(uchar command, const char* msg){
 
     uchar tx_buffer[13];
     uchar *p_tx_buffer;
@@ -120,7 +120,7 @@ void UartController::send_tx(uchar command, const char* msg){
     *p_tx_buffer++ = command;
     memcpy(p_tx_buffer, matricula, 4);
     p_tx_buffer+=4;
-    uchar datasize = handleData(p_rx_buffer, command);
+    uchar datasize = handleData(p_tx_buffer, command);
     if(datasize == -1) return;
     p_tx_buffer += datasize;
     uchar msgsize = p_tx_buffer - tx_buffer;
@@ -134,6 +134,7 @@ void UartController::send_tx(uchar command, const char* msg){
     if (filestream != -1)
     {
         printf("Escrevendo caracteres na UART ...");
+        for(int i=0;i<msgsize;i++)printf("%0x", tx_buffer[i]);
         int count = write(filestream, tx_buffer, msgsize);
         if (count < 0)
         {
@@ -147,7 +148,7 @@ void UartController::send_tx(uchar command, const char* msg){
 
     sleep(1);
     //----- CHECK FOR ANY RX BYTES -----
-    recv_rx(command)
+    recv_rx(command);
     return;
 }
 void UartController::recv_rx(uchar command){
@@ -158,12 +159,15 @@ void UartController::recv_rx(uchar command){
         uchar rx_buffer[256];
         uchar* p_rx_buffer;
         p_rx_buffer = rx_buffer;
-        int rx_length = read(filestream, (void*)rx_buffer, 255);      //Filestream, buffer to store in, number of bytes to read (max)
-        if (rx_length < 0)
+        
+        int rx_length = -1;
+        while(rx_length < 0)
         {
+            rx_length = read(filestream, (void*)rx_buffer, 255);      //Filestream, buffer to store in, number of bytes to read (max)
             printf("Erro na leitura.\n"); //An error occured (will occur if there are no bytes)
+            usleep(100000);
         }
-        else if (rx_length == 0)
+        if (rx_length == 0)
         {
             printf("Nenhum dado disponível.\n"); //No data waiting
         }
