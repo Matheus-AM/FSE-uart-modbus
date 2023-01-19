@@ -13,6 +13,23 @@ private:
     int filestream;
     uchar matricula[4];
     uchar endereco;
+    
+    const static uchar RECV_CODE = 0x23;
+    const static uchar SEND_CODE = 0x16;
+
+    void recv_rx(uchar command);
+    uchar getModbusCode(uchar subcode);
+    uchar handleData(uchar* p_tx_buffer, uchar subcode);
+    uchar handleRecv(uchar* p_tx_buffer, uchar subcode);
+    
+    short CRC16(short crc, char data);
+    short calcula_CRC(unsigned char *commands, int size);
+
+public:
+    UartController(uchar matric[4]);
+    void send_tx(uchar command, const char* msg);
+    void close_it();
+
     //Solicita Temperatura Interna
     const static uchar RECV_SELF_TEMP = 0xC1;
     //Solicita Temperatura de Referência
@@ -32,29 +49,7 @@ private:
     const static uchar SEND_PLAY_STATE = 0xD5;
     //Envia Temperatura Ambiente (Float))
     const static uchar SEND_ROOM_TEMP = 0xD6;
-    
 
-    const static uchar POWER_ON_CODE = 0xA1;
-    const static uchar POWER_OFF_CODE = 0xA2;
-    const static uchar PLAY_CODE = 0xA3;
-    const static uchar CANCEL_CODE = 0xA4;
-    const static uchar MENU_CODE = 0xA5;
-
-    const static uchar RECV_CODE = 0x23;
-    const static uchar SEND_CODE = 0x16;
-
-    
-    short CRC16(short crc, char data);
-    short calcula_CRC(unsigned char *commands, int size);
-
-public:
-    UartController(uchar matric[4]);
-    uchar getModbusCode(uchar subcode);
-    void send_tx(uchar command, const char* msg);
-    void recv_rx(uchar command);
-    uchar handleData(uchar* p_tx_buffer, uchar subcode);
-    uchar handleRecv(uchar* p_tx_buffer, uchar subcode);
-    void close_it();
 };
 
 struct modbus_header

@@ -1,17 +1,5 @@
 #include <uartController.h>
 
-class Forno
-{
-private:
-public:
-    uchar power;
-    uchar dash;
-    uchar play;
-};
-
-
-Forno forno;
-
 UartController::UartController(uchar matric[4]){
     memcpy(matricula, matric, 4);
     endereco = 1;
@@ -69,48 +57,36 @@ uchar UartController::handleData(uchar* p_tx_buffer, uchar subcode){
         return 0;
     default:
         printf("send_rx() erro\n");
-        return 0;
+        return -1;
     }
 
 }
 
 uchar UartController::handleRecv(uchar* p_tx_buffer, uchar subcode){
 
-    int ctr = 87654;
-    float ctrf = 3.1416;
+    // 0 = 0, 1 = int, 2 = float
     switch (subcode)
     {
-    case SEND_CTR:
-        //pid
-        memcpy(p_tx_buffer, &ctr, 4);
-        return 4;
-    case SEND_REF_TEMP:
-        memcpy(p_tx_buffer, &ctrf, 4);
-        return 4;
-    case SEND_POW_STATE:
-        *p_tx_buffer = 0;
-        return 1;
-    case SEND_DASH_STATE:
-        *p_tx_buffer = 0;
-        return 1;
-    case SEND_PLAY_STATE:
-        *p_tx_buffer = 0;
-        return 1;
-    case SEND_ROOM_TEMP:
-        memcpy(p_tx_buffer, &ctrf, 4);
-        return 4;    
     case RECV_SELF_TEMP:
     case RECV_REL_TEMP:
+    case SEND_ROOM_TEMP:
+        return 2;
     case RECV_CMD:
+    case SEND_POW_STATE:
+    case SEND_DASH_STATE:
+    case SEND_PLAY_STATE:
+        return 1;
+    case SEND_CTR:
+    case SEND_REF_TEMP:
         return 0;
     default:
-        printf("send_rx() erro\n");
-        return 0;
+        printf("recv_rx() erro\n");
+        return -1;
     }
 
 }
 
-void UartController::send_tx(uchar command, const char* msg){
+int UartController::send_tx(uchar command, const char* msg){
 
     uchar tx_buffer[13];
     uchar *p_tx_buffer;
@@ -121,7 +97,8 @@ void UartController::send_tx(uchar command, const char* msg){
     memcpy(p_tx_buffer, matricula, 4);
     p_tx_buffer+=4;
     uchar datasize = handleData(p_tx_buffer, command);
-    if(datasize == -1) return;
+    if(datasize == -1) return -1;
+    memcpy(p_tx_buffer, msg, datasize);
     p_tx_buffer += datasize;
     uchar msgsize = p_tx_buffer - tx_buffer;
     ushort crc = calcula_CRC(tx_buffer, msgsize);
@@ -148,10 +125,9 @@ void UartController::send_tx(uchar command, const char* msg){
 
     sleep(1);
     //----- CHECK FOR ANY RX BYTES -----
-    recv_rx(command);
-    return;
+    return recv_rx(command);
 }
-void UartController::recv_rx(uchar command){
+int UartController::recv_rx(uchar command){
 
     if (filestream != -1)
     {
@@ -176,24 +152,26 @@ void UartController::recv_rx(uchar command){
             struct modbus_header head;
             memcpy(&head, p_rx_buffer, sizeof(head));
             p_rx_buffer += sizeof(head);
-            uchar datasize = handleRecv(p_rx_buffer, command);
-            uchar* data = new uchar[datasize];
-            memcpy(data, p_rx_buffer, datasize);
-            if(datasize == -1) return;
+            uchar dataType = handleRecv(p_rx_buffer, command);
+            uchar datasize = 0;
+            int data = 0;
+            if(dataType == -1) return -1;
+            if(dataType != 0){
+                datasize = 4;
+            }
+            memcpy(&data, p_rx_buffer, datasize);
             p_rx_buffer += datasize;
             uchar msgsize = p_rx_buffer - rx_buffer;
             ushort crc = calcula_CRC(rx_buffer, msgsize);
             ushort mcrc;
             memcpy(&mcrc, p_rx_buffer, 2);
             if(crc == mcrc){
-                printf("dado: ")
-                for(int i=0;i<datasize;i++)printf("%0x ", data[i]);
-                printf("\n");
+                printf("dado: %0x\n", data);
+                return data;
             }
-            delete [] data;
+            return -1;
         }
     }
-    return;
 }
 
 short UartController::CRC16(short crc, char data)
@@ -248,27 +226,4 @@ void UartController::close_it(){
     close(filestream);
     return;
 }
-
-int handle_interface(const char* type,const char* msg){
-    int cmd = 0xb0;
-    if(msg[0] == '0' && msg[1] == '0'){
-        cmd -= 0x10;
-    }
-    
-    switch(type[0]){
-        case 'i':
-            cmd += 1;
-        break;
-        case 'f':
-            cmd += 2;        
-        break;
-        case 's':
-            cmd += 3;
-        break;
-    }
-
-    return cmd;
-}
-
-
 
