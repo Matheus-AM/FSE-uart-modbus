@@ -5,8 +5,8 @@ INCDIR = $(BLDDIR)/inc
 SRCDIR = $(BLDDIR)/src
 OBJDIR = $(BLDDIR)/obj
 CFLAGS = -c -Wall -I$(INCDIR)
-SRC = $(wildcard $(SRCDIR)/*.{cpp,c})
-OBJ = $(patsubst $(SRCDIR)/%.{cpp,c}, $(OBJDIR)/%.o, $(SRC))
+SRC = $(wildcard $(SRCDIR)/*.cpp)
+OBJ = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRC))
 EXE = bin/bin
 
 all: clean $(EXE) 

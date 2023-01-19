@@ -110,7 +110,7 @@ uchar UartController::handleRecv(uchar* p_tx_buffer, uchar subcode){
 
 }
 
-int UartController::send_tx(uchar command, const char* msg){
+void UartController::send_tx(uchar command, const char* msg){
 
     uchar tx_buffer[13];
     uchar *p_tx_buffer;
@@ -133,8 +133,8 @@ int UartController::send_tx(uchar command, const char* msg){
     
     if (filestream != -1)
     {
-        printf("Escrevendo caracteres na UART ...");
-        for(int i=0;i<msgsize;i++)printf("%0x", tx_buffer[i]);
+        printf("Escrevendo caracteres na UART ...\n");
+        for(int i=0;i<msgsize;i++)printf("%0x ", tx_buffer[i]);
         int count = write(filestream, tx_buffer, msgsize);
         if (count < 0)
         {
