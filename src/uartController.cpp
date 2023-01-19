@@ -177,6 +177,8 @@ void UartController::recv_rx(uchar command){
             memcpy(&head, p_rx_buffer, sizeof(head));
             p_rx_buffer += sizeof(head);
             uchar datasize = handleRecv(p_rx_buffer, command);
+            uchar* data = new uchar[datasize];
+            memcpy(data, p_rx_buffer, datasize);
             if(datasize == -1) return;
             p_rx_buffer += datasize;
             uchar msgsize = p_rx_buffer - rx_buffer;
@@ -184,8 +186,11 @@ void UartController::recv_rx(uchar command){
             ushort mcrc;
             memcpy(&mcrc, p_rx_buffer, 2);
             if(crc == mcrc){
-                
+                printf("dado: ")
+                for(int i=0;i<datasize;i++)printf("%0x ", data[i]);
+                printf("\n");
             }
+            delete [] data;
         }
     }
     return;
