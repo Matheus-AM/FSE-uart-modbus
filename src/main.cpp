@@ -1,4 +1,4 @@
-#include "uartController.h"
+#include <uartController.h>
 
 int main(int argc, const char * argv[]) {
     if(argc != 3){
@@ -6,7 +6,7 @@ int main(int argc, const char * argv[]) {
     }
     uchar matricula[4] = {0x03, 0x00, 0x07, 0x00};
     UartController uart(matricula);
-    int cmd = handle_interface(argv[1], argv[2]);
+    // int cmd = handle_interface(argv[1], argv[2]);
     // if(cmd > 0xa3){
     uart.send_tx(0xc3, argv[2]);
     // }else{

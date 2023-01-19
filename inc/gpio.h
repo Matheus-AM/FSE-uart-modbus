@@ -1,4 +1,4 @@
-#include <bcm2835.h>
+/* #include <bcm2835.h>
 #include <fstream>
 #include <string>
 #include <stdio.h>
@@ -58,3 +58,4 @@ public:
 void *gpio_handler(void* args);
 
 int readDHT(int pin, uint8_t* states);
+*/

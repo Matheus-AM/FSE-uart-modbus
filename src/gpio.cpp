@@ -1,4 +1,4 @@
-#include <gpio.h>
+/* #include <gpio.h>
 
 #define DEV
 
@@ -193,3 +193,4 @@ void *gpio_handler(void* args){
         main_gpio.refreshAll(response);
     }
 }
+*/

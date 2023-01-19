@@ -4,7 +4,6 @@
 #include <unistd.h>         //Used for UART
 #include <fcntl.h>          //Used for UART
 #include <termios.h>        //Used for UART
-#include <libs/crc16.h>
 
 using uchar = unsigned char;
 
@@ -21,7 +20,7 @@ private:
     //Lê comandos do usuário
     const static uchar RECV_CMD = 0xC3;
 
-    //Envia sinal de controle Int (4 bytes)
+    //Envia sinal de controle Int (4 bytes)  PID
     const static uchar SEND_CTR = 0xD1;
     //Envia sinal de Referência Float (4 bytes)
     const static uchar SEND_REF_TEMP = 0xD2;
@@ -43,6 +42,10 @@ private:
 
     const static uchar RECV_CODE = 0x23;
     const static uchar SEND_CODE = 0x16;
+
+    
+    short CRC16(short crc, char data);
+    short calcula_CRC(unsigned char *commands, int size);
 
 public:
     UartController(uchar matric[4]);
