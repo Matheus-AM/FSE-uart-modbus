@@ -63,7 +63,8 @@ int main(int argc, const char * argv[]) {
 
     if (wiringPiSetup() == -1) exit (1);
     float home_temp = get_home_temp_bme280();
-    Forno forno(UartController(matricula));
+    UartController* uart = new UartController(matricula);
+    Forno forno(uart);
     GpioPWM pwm;
 
     // while (1)
