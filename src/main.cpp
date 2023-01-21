@@ -21,16 +21,15 @@ private:
     const static uchar MENU_CODE = 0xA5;
 
 public:
-    Forno(uchar matricula[4]);
+    Forno(const UartController* uart_);
     UartController* uart;
     
     void handleUserCmd(int user_cmd);
     ~Forno();
 };
 
-Forno::Forno(uchar matricula[4]) : uart(matricula)
+Forno::Forno(const UartController* uart_) : uart(uart_)
 {
-    
     temp_ambiente = 0;
     temp_self = 0;
     temp_ref = 0;
@@ -64,7 +63,8 @@ int main(int argc, const char * argv[]) {
 
     if (wiringPiSetup() == -1) exit (1);
     float home_temp = get_home_temp_bme280();
-    Forno forno(matricula);
+    UartController* uart = new UartController(matricula);
+    Forno forno(uart);
     GpioPWM pwm;
 
     // while (1)
