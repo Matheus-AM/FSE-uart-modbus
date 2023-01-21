@@ -13,7 +13,6 @@ private:
     uchar dash;
     uchar play;
 
-    UartController* uart;
 
     const static uchar POWER_ON_CODE = 0xA1;
     const static uchar POWER_OFF_CODE = 0xA2;
@@ -23,6 +22,7 @@ private:
 
 public:
     Forno(uchar matricula[4]);
+    UartController* uart;
     
     void handleUserCmd(int user_cmd);
     ~Forno();
