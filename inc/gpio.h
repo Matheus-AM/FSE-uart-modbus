@@ -1,5 +1,6 @@
 #include <helpers.h>
 #include <wiringPi.h>
+#include <softPwm.h>
 
 class GpioPWM
 {

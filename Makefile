@@ -19,7 +19,7 @@ $(EXE): $(OBJPP)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	@mkdir -p $(@D)
-	$(CCPP) $(CFLAGS) $< -o $@
+	$(CCPP) $(LDFLAGS) $(CFLAGS) $< -o $@
 
 libs:    
 	$(CC) $(LDFLAGS) $(CFLAGS) $(SRC)
