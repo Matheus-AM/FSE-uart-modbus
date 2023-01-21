@@ -22,8 +22,7 @@ private:
     const static uchar MENU_CODE = 0xA5;
 
 public:
-    Forno(/* args */);
-    //
+    Forno(uchar[4] matricula);
     
     void handleUserCmd(int user_cmd);
     ~Forno();
@@ -79,6 +78,6 @@ int main(int argc, const char * argv[]) {
     usleep(2000000);
     printf("%f\n", home_temp);
 
-    uart.close_it();
+    forno.uart->close_it();
     return 0;
 }
