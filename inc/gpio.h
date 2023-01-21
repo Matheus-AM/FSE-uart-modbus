@@ -1,61 +1,14 @@
-/* #include <bcm2835.h>
-#include <fstream>
-#include <string>
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include <helpers.h>
+#include <wiringPi.h>
 
-#define MAXTIMINGS 100
-
-//helpers
-#define repeat(x) for(int it=0;it<x;it++)
-
-
-class Pin 
+class GpioPWM
 {
 private:
-    uint8_t state;
-    std::string type;
-    std::string tag;
+    const uchar fanPin = 5; // BCM GPIO 24
+    const uchar resistPin = 4; // BCM GPIO 23
+    const int RANGE = 100;
+    int intensity = 0;
 public:
-    uint8_t isInput;
-    uint8_t gpioPin;
-    Pin(json jgpio, uint8_t isIn);
-    void refreshState(uint8_t* stat);
-    void showState();
-    void changeState();
-    uint8_t getGpioPin();
-    uint8_t getState();
-
+    GpioPWM(void);
+    void operator<<(const int intensity_);
 };
-
-class Gpio
-{
-public:
-    Pin* light1;
-    Pin* light2;
-    Pin* air;
-    Pin* projector;
-    Pin* alarmBuzz;
-
-    Pin* sPresence;
-    Pin* sSmoke;
-    Pin* sWindow;
-    Pin* sDoor;
-    Pin* sCountIn;
-    Pin* sCountOut;
-
-    Pin* sTemp;
-    Pin* sHumid;
-    Gpio(json data);
-    void refreshAll(uint8_t* states);
-    void handle_smoke(uint8_t* states);
-};
-
-
-
-void *gpio_handler(void* args);
-
-int readDHT(int pin, uint8_t* states);
-*/

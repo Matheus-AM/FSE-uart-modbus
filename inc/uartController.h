@@ -4,8 +4,7 @@
 #include <unistd.h>         //Used for UART
 #include <fcntl.h>          //Used for UART
 #include <termios.h>        //Used for UART
-
-using uchar = unsigned char;
+#include <helpers.h>
 
 class UartController 
 {

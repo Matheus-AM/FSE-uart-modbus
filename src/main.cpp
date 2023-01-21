@@ -46,12 +46,11 @@ void Forno::handleUserCmd(int user_cmd){
         play = 1;
         break;
     case CANCEL_CODE:
-        play = 1;
+        play = 0;
     case MENU_CODE:
         dash = !dash;
         break;
     default:
-        printf("user_cmd erro\n");
         break;
     }
 }
