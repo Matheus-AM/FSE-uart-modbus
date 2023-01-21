@@ -10,7 +10,7 @@ GpioPWM::GpioPWM()
     softPwmCreate(resistPin, 0, RANGE); /* set PWM channel along with range*/
 }
 
-GpioPWM::operator<<(const int intensity_)
+void GpioPWM::operator<<(const int intensity_)
 {
     if (intensity_ < 0)
     {
