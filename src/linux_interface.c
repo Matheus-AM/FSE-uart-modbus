@@ -128,7 +128,7 @@ int8_t user_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void 
  * @retval BME280_E_NVM_COPY_FAILED - Error: NVM copy failed
  *
  */
-int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev);
+int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float* home_temp);
 
 /*!
  * @brief This function starts execution of the program.
@@ -321,9 +321,9 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float* home_temp)
             break;
         }
         int tta_ = temp*100;
-        int ttb_ = comp_data->temperature*100;
+        int ttb_ = comp_data.temperature*100;
         if(tta_ == ttb_) break;
-        temp = comp_data->temperature;
+        temp = comp_data.temperature;
         // print_sensor_data(&comp_data);
     }
     *home_temp = temp;
