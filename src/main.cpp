@@ -1,4 +1,5 @@
 #include <uartController.h>
+#include <gpio.h>
 
 class Forno
 {

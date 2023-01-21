@@ -1,5 +1,5 @@
-#include <gpio.h>
 #include <helpers.h>
+#include <gpio.h>
 
 GpioPWM::GpioPWM()
 {
