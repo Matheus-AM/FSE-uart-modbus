@@ -22,13 +22,13 @@ private:
     const static uchar MENU_CODE = 0xA5;
 
 public:
-    Forno(uchar[4] matricula);
+    Forno(uchar matricula[4]);
     
     void handleUserCmd(int user_cmd);
     ~Forno();
 };
 
-Forno::Forno(uchar[4] matricula) : uart(matricula)
+Forno::Forno(uchar matricula[4]) : uart(matricula)
 {
     
     temp_ambiente = 0;
