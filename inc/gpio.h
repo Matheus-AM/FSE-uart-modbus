@@ -1,12 +1,7 @@
 #include <helpers.h>
-#ifdef __cplusplus
-extern "C" {
-#endif
 #include <wiringPi.h>
 #include <softPwm.h>
-#ifdef __cplusplus
-}
-#endif
+
 class GpioPWM
 {
 private:

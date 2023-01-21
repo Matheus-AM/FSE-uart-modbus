@@ -15,7 +15,7 @@ EXE = bin/bin
 all: clean $(EXE) 
     
 $(EXE): $(OBJPP) 
-	$(CCPP) $(LDFLAGS) $(OBJDIR)/*.o -o $@ 
+	$(CCPP) $(OBJDIR)/*.o -o $@ $(LDFLAGS)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	@mkdir -p $(@D)
