@@ -21,14 +21,16 @@ private:
     const static uchar MENU_CODE = 0xA5;
 
 public:
-    Forno(const UartController* uart_);
-    const UartController* uart;
+    Forno(UartController* uart_);
+    UartController* uart;
+    void send_uart(uchar command, const uchar* msg){uart->send_tx(command, msg)};
+    void close_it(){uart->close_it()};
     
     void handleUserCmd(int user_cmd);
     ~Forno();
 };
 
-Forno::Forno(const UartController* uart_) : uart(uart_)
+Forno::Forno(UartController* uart_) : uart(uart_)
 {
     temp_ambiente = 0;
     temp_self = 0;
