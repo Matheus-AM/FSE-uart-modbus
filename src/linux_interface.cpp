@@ -142,7 +142,7 @@ float get_home_temp_bme280()
     /* Variable to define the result */
     int8_t rslt = BME280_OK;
 
-    const char* i2c_path = "/dev/i2c-0";
+    const char* i2c_path = "/dev/i2c-1";
 
     if ((id.fd = open(i2c_path, O_RDWR)) < 0)
     {
