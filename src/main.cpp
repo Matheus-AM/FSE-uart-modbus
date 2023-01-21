@@ -22,8 +22,11 @@ public:
     ~Forno();
 };
 
-Forno::Forno(/* args */)
+Forno::Forno()
 {
+    temp_ambiente = 0;
+    temp_self = 0;
+    temp_ref = 0;
 }
 
 Forno::~Forno()
@@ -57,11 +60,11 @@ void Forno::handleUserCmd(int user_cmd){
 int main(int argc, const char * argv[]) {
     uchar matricula[4] = {0x00, 0x03, 0x00, 0x07};
     UartController uart(matricula);
-    Forno forno();
+    Forno forno;
     while (1)
     {
-        int user_cmd = uart.send_tx(0xc3, argv[2]);
-        if (user_cmd != -1) handleUserCmd(user_cmd);   
+        int user_cmd = uart.send_tx(0xc3, 0);
+        if (user_cmd != -1) forno.handleUserCmd(user_cmd);   
         
         usleep(500000);
     }

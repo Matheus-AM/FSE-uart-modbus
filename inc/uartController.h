@@ -17,7 +17,7 @@ private:
     const static uchar RECV_CODE = 0x23;
     const static uchar SEND_CODE = 0x16;
 
-    void recv_rx(uchar command);
+    int recv_rx(uchar command);
     uchar getModbusCode(uchar subcode);
     uchar handleData(uchar* p_tx_buffer, uchar subcode);
     uchar handleRecv(uchar* p_tx_buffer, uchar subcode);
@@ -27,7 +27,7 @@ private:
 
 public:
     UartController(uchar matric[4]);
-    void send_tx(uchar command, const char* msg);
+    int send_tx(uchar command, const char* msg);
     void close_it();
 
     //Solicita Temperatura Interna

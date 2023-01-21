@@ -86,7 +86,7 @@ uchar UartController::handleRecv(uchar* p_tx_buffer, uchar subcode){
 
 }
 
-int UartController::send_tx(uchar command, const char* msg){
+int UartController::send_tx(uchar command, const uchar* msg){
 
     uchar tx_buffer[13];
     uchar *p_tx_buffer;
@@ -169,9 +169,9 @@ int UartController::recv_rx(uchar command){
                 printf("dado: %0x\n", data);
                 return data;
             }
-            return -1;
         }
     }
+    return -1;
 }
 
 short UartController::CRC16(short crc, char data)
