@@ -12,6 +12,9 @@ private:
     uchar power;
     uchar dash;
     uchar play;
+
+    UartController* uart;
+
     const static uchar POWER_ON_CODE = 0xA1;
     const static uchar POWER_OFF_CODE = 0xA2;
     const static uchar PLAY_CODE = 0xA3;
@@ -21,19 +24,17 @@ private:
 public:
     Forno(/* args */);
     //
+    
     void handleUserCmd(int user_cmd);
     ~Forno();
 };
 
-Forno::Forno()
+Forno::Forno(uchar[4] matricula) : uart(matricula)
 {
+    
     temp_ambiente = 0;
     temp_self = 0;
     temp_ref = 0;
-}
-
-Forno::~Forno()
-{
 }
 
 void Forno::handleUserCmd(int user_cmd){
@@ -63,8 +64,8 @@ int main(int argc, const char * argv[]) {
     uchar matricula[4] = {0x00, 0x03, 0x00, 0x07};
 
     if (wiringPiSetup() == -1) exit (1);
-    UartController uart(matricula);
-    Forno forno;
+    float home_temp = get_home_temp_bme280();
+    Forno forno(matricula);
     GpioPWM pwm;
 
     // while (1)
@@ -75,7 +76,6 @@ int main(int argc, const char * argv[]) {
     //     usleep(500000);
     // }
 
-    float home_temp = get_home_temp_bme280();
     usleep(2000000);
     printf("%f\n", home_temp);
 
