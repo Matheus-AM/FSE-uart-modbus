@@ -223,7 +223,7 @@ int8_t user_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void 
 
     id = *((struct identifier *)intf_ptr);
 
-    buf = malloc(len + 1);
+    buf = new uint8_t[len + 1];
     buf[0] = reg_addr;
     memcpy(buf + 1, data, len);
     if (write(id.fd, buf, len + 1) < (uint16_t)len)
@@ -231,7 +231,7 @@ int8_t user_i2c_write(uint8_t reg_addr, const uint8_t *data, uint32_t len, void 
         return BME280_E_COMM_FAIL;
     }
 
-    free(buf);
+    delete [] buf;
 
     return BME280_OK;
 }
