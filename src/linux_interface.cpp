@@ -300,7 +300,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float* home_temp)
     req_delay = bme280_cal_meas_delay(&dev->settings);
     float temp = 0;
     /* Continuously stream sensor data */
-    int iii = 3;
+    int iii = 2;
     while (iii--)
     {
         /* Set the sensor to forced mode */
@@ -319,11 +319,9 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float* home_temp)
             fprintf(stderr, "Failed to get sensor data (code %+d).", rslt);
             break;
         }
-        int tta_ = temp*100;
-        int ttb_ = comp_data.temperature*100;
-        // if(tta_ == ttb_) break;
         temp = comp_data.temperature;
-        print_sensor_data(&comp_data);
+        //print_sensor_data(&comp_data);
+        usleep(200000);
     }
     *home_temp = temp;
     return rslt;
