@@ -61,6 +61,7 @@ int main(int argc, const char * argv[]) {
     uchar matricula[4] = {0x00, 0x03, 0x00, 0x07};
     UartController uart(matricula);
     Forno forno;
+    GpioPWM pwm();
     while (1)
     {
         int user_cmd = uart.send_tx(0xc3, 0);
