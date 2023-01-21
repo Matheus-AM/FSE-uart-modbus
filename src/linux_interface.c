@@ -133,7 +133,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev);
 /*!
  * @brief This function starts execution of the program.
  */
-int main(int argc, char* argv[])
+float get_home_temp_bme280()
 {
     struct bme280_dev dev;
 
@@ -142,15 +142,11 @@ int main(int argc, char* argv[])
     /* Variable to define the result */
     int8_t rslt = BME280_OK;
 
-    if (argc < 2)
-    {
-        fprintf(stderr, "Missing argument for i2c bus.\n");
-        exit(1);
-    }
+    const char* i2c_path = "/dev/i2c-0";
 
-    if ((id.fd = open(argv[1], O_RDWR)) < 0)
+    if ((id.fd = open(i2c_path, O_RDWR)) < 0)
     {
-        fprintf(stderr, "Failed to open the i2c bus %s\n", argv[1]);
+        fprintf(stderr, "Failed to open the i2c bus %s\n", i2c_path);
         exit(1);
     }
 
@@ -182,15 +178,15 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Failed to initialize the device (code %+d).\n", rslt);
         exit(1);
     }
-
-    rslt = stream_sensor_data_forced_mode(&dev);
+    float home_temp;
+    rslt = stream_sensor_data_forced_mode(&dev, &home_temp);
     if (rslt != BME280_OK)
     {
         fprintf(stderr, "Failed to stream sensor data (code %+d).\n", rslt);
         exit(1);
     }
 
-    return 0;
+    return home_temp;
 }
 
 /*!
@@ -268,7 +264,7 @@ void print_sensor_data(struct bme280_data *comp_data)
 /*!
  * @brief This API reads the sensor temperature, pressure and humidity data in forced mode.
  */
-int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
+int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float* home_temp)
 {
     /* Variable to define the result */
     int8_t rslt = BME280_OK;
@@ -304,7 +300,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
     /*Calculate the minimum delay required between consecutive measurement based upon the sensor enabled
      *  and the oversampling configuration. */
     req_delay = bme280_cal_meas_delay(&dev->settings);
-
+    float temp = 0;
     /* Continuously stream sensor data */
     while (1)
     {
@@ -324,9 +320,12 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
             fprintf(stderr, "Failed to get sensor data (code %+d).", rslt);
             break;
         }
-
-        print_sensor_data(&comp_data);
+        int tta_ = temp*100;
+        int ttb_ = comp_data->temperature*100;
+        if(tta_ == ttb_) break;
+        temp = comp_data->temperature;
+        // print_sensor_data(&comp_data);
     }
-
+    *home_temp = temp;
     return rslt;
 }

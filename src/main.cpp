@@ -1,5 +1,6 @@
 #include <uartController.h>
 #include <gpio.h>
+#include <i2cbme280.h>
 
 class Forno
 {
@@ -59,19 +60,24 @@ void Forno::handleUserCmd(int user_cmd){
 
 int main(int argc, const char * argv[]) {
     uchar matricula[4] = {0x00, 0x03, 0x00, 0x07};
+
+    if (wiringPiSetup() == -1) exit (1);
     UartController uart(matricula);
     Forno forno;
     GpioPWM pwm;
-    while (1)
-    {
-        int user_cmd = uart.send_tx(0xc3, 0);
-        if (user_cmd != -1) forno.handleUserCmd(user_cmd);   
+
+    // while (1)
+    // {
+    //     int user_cmd = uart.send_tx(0xc3, 0);
+    //     if (user_cmd != -1) forno.handleUserCmd(user_cmd);   
         
-        // usleep(500000);
-        usleep(2000000);
-        pwm<<40;
-    }
-    
+    //     usleep(500000);
+    // }
+
+    float home_temp = get_home_temp_bme280();
+    usleep(2000000);
+    printf("%f\n", home_temp);
+
     uart.close_it();
     return 0;
 }
