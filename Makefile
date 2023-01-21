@@ -21,14 +21,10 @@ $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	@mkdir -p $(@D)
 	$(CCPP) $(CFLAGS) $< -o $@
 
-libs:
-    
-$(EXE): $(OBJ) 
-	$(CC) $(LDFLAGS) $(OBJDIR)/*.o -o $@ 
-
-$(OBJDIR)/%.o : $(SRCDIR)/%.c
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $< -o $@
+libs:    
+	$(CC) $(LDFLAGS) $(CFLAGS) $(SRC)
+	cp ./*.o obj/
+	rm ./*.o
 
 clean:
 	-rm -f $(OBJDIR)/*.o $(EXE)
