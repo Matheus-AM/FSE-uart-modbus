@@ -86,48 +86,6 @@ uchar UartController::handleRecv(uchar* p_tx_buffer, uchar subcode){
 
 }
 
-template<typename T = int> 
-T UartController::send_tx(uchar command, const uchar* msg){
-
-    uchar tx_buffer[13];
-    uchar *p_tx_buffer;
-    p_tx_buffer = tx_buffer;
-    *p_tx_buffer++ = endereco;
-    *p_tx_buffer++ = getModbusCode(command);
-    *p_tx_buffer++ = command;
-    memcpy(p_tx_buffer, matricula, 4);
-    p_tx_buffer+=4;
-    uchar datasize = handleData(p_tx_buffer, command);
-    if(datasize == -1) return -1;
-    memcpy(p_tx_buffer, msg, datasize);
-    p_tx_buffer += datasize;
-    uchar msgsize = p_tx_buffer - tx_buffer;
-    ushort crc = calcula_CRC(tx_buffer, msgsize);
-    memcpy(p_tx_buffer, &crc , 2);
-    p_tx_buffer+=2;
-    msgsize += 2;
-
-    printf("Buffers de memória criados!\n");
-    
-    if (filestream != -1)
-    {
-        printf("Escrevendo caracteres na UART ...\n");
-        for(int i=0;i<msgsize;i++)printf("%0x ", tx_buffer[i]);
-        int count = write(filestream, tx_buffer, msgsize);
-        if (count < 0)
-        {
-            printf("UART TX error\n");
-        }
-        else
-        {
-            printf("escrito.\n");
-        }
-    }
-
-    sleep(1);
-    //----- CHECK FOR ANY RX BYTES -----
-    return (T)recv_rx(command);
-}
 int UartController::recv_rx(uchar command){
 
     if (filestream != -1)
