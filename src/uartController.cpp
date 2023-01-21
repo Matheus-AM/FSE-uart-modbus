@@ -85,8 +85,8 @@ uchar UartController::handleRecv(uchar* p_tx_buffer, uchar subcode){
     }
 
 }
-
-int UartController::send_tx(uchar command, const uchar* msg){
+template<typename T>
+T UartController::send_tx(uchar command, const uchar* msg){
 
     uchar tx_buffer[13];
     uchar *p_tx_buffer;
@@ -125,7 +125,7 @@ int UartController::send_tx(uchar command, const uchar* msg){
 
     sleep(1);
     //----- CHECK FOR ANY RX BYTES -----
-    return recv_rx(command);
+    return (T)recv_rx(command);
 }
 int UartController::recv_rx(uchar command){
 

@@ -21,20 +21,16 @@ private:
     const static uchar MENU_CODE = 0xA5;
 
 public:
-    Forno(UartController* uart_);
-    UartController* uart;
-    void send_uart(uchar command, const uchar* msg){uart->send_tx(command, msg)};
-    void close_it(){uart->close_it()};
-    
+    Forno(uchar matricula[4]);
+    UartController* uart;    
     void handleUserCmd(int user_cmd);
-    ~Forno();
 };
 
-Forno::Forno(UartController* uart_) : uart(uart_)
+Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
 {
-    temp_ambiente = 0;
-    temp_self = 0;
-    temp_ref = 0;
+    temp_ambiente = get_home_temp_bme280();
+    temp_self = uart->send_tx<float>(0xC1, NULL);
+    temp_ref = uart->send_tx<float>(0xC2, NULL);
 }
 
 void Forno::handleUserCmd(int user_cmd){
@@ -64,9 +60,7 @@ int main(int argc, const char * argv[]) {
     uchar matricula[4] = {0x00, 0x03, 0x00, 0x07};
 
     if (wiringPiSetup() == -1) exit (1);
-    float home_temp = get_home_temp_bme280();
-    UartController* uart = new UartController(matricula);
-    Forno forno(uart);
+    Forno forno(matricula);
     GpioPWM pwm;
 
     // while (1)
@@ -80,6 +74,6 @@ int main(int argc, const char * argv[]) {
     usleep(2000000);
     printf("%f\n", home_temp);
 
-    forno.close_it();
+    forno.uart->close_it();
     return 0;
 }
