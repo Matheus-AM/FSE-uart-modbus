@@ -21,14 +21,14 @@ private:
     const static uchar MENU_CODE = 0xA5;
 
 public:
-    Forno(const UartController& uart_);
+    Forno(const UartController* uart_);
     const UartController* uart;
     
     void handleUserCmd(int user_cmd);
     ~Forno();
 };
 
-Forno::Forno(const UartController& uart_) : uart(uart_)
+Forno::Forno(const UartController* uart_) : uart(uart_)
 {
     temp_ambiente = 0;
     temp_self = 0;
@@ -78,6 +78,6 @@ int main(int argc, const char * argv[]) {
     usleep(2000000);
     printf("%f\n", home_temp);
 
-    forno.uart->close_it();
+    forno.close_it();
     return 0;
 }
