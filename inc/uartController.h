@@ -26,8 +26,8 @@ private:
 
 public:
     UartController(uchar matric[4]);
-    template<typename T = int> 
-    T send_tx<T>(uchar command, const uchar* msg);
+    float send_tx(uchar command, const uchar* msg);
+    int send_tx(uchar command, const uchar* msg);
     void close_it();
 
     //Solicita Temperatura Interna
