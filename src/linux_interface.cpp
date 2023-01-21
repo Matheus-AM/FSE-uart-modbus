@@ -295,14 +295,13 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float* home_temp)
         return rslt;
     }
 
-    printf("Temperature, Pressure, Humidity\n");
-
     /*Calculate the minimum delay required between consecutive measurement based upon the sensor enabled
      *  and the oversampling configuration. */
     req_delay = bme280_cal_meas_delay(&dev->settings);
     float temp = 0;
     /* Continuously stream sensor data */
-    while (1)
+    int iii = 3;
+    while (iii--)
     {
         /* Set the sensor to forced mode */
         rslt = bme280_set_sensor_mode(BME280_FORCED_MODE, dev);
@@ -322,9 +321,9 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev, float* home_temp)
         }
         int tta_ = temp*100;
         int ttb_ = comp_data.temperature*100;
-        if(tta_ == ttb_) break;
+        // if(tta_ == ttb_) break;
         temp = comp_data.temperature;
-        // print_sensor_data(&comp_data);
+        print_sensor_data(&comp_data);
     }
     *home_temp = temp;
     return rslt;
