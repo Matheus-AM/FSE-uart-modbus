@@ -11,7 +11,7 @@ private:
     int intensity = 0;
 public:
     GpioPWM(void);
-    void operator<<(const int intensity_){
+    void operator<<(const GpioPWM self, const int intensity_){
         if (intensity_ < 0){
             if(intensity == -intensity_) return;
             intensity = (-intensity_ < RANGE ? -intensity_: RANGE);
