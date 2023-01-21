@@ -67,7 +67,9 @@ int main(int argc, const char * argv[]) {
         int user_cmd = uart.send_tx(0xc3, 0);
         if (user_cmd != -1) forno.handleUserCmd(user_cmd);   
         
-        usleep(500000);
+        // usleep(500000);
+        usleep(2000000);
+        pwm<<40;
     }
     
     uart.close_it();
