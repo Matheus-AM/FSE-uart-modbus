@@ -31,6 +31,7 @@ Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
     temp_ambiente = get_home_temp_bme280();
     temp_self = uart->send_tx<float>(0xC1, NULL);
     temp_ref = uart->send_tx<float>(0xC2, NULL);
+    printf("%f\n", temp_ambiente);
 }
 
 void Forno::handleUserCmd(int user_cmd){
@@ -72,7 +73,6 @@ int main(int argc, const char * argv[]) {
     // }
 
     usleep(2000000);
-    printf("%f\n", home_temp);
 
     forno.uart->close_it();
     return 0;

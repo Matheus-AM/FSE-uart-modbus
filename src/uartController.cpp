@@ -85,8 +85,8 @@ uchar UartController::handleRecv(uchar* p_tx_buffer, uchar subcode){
     }
 
 }
-template<typename T>
-T UartController::send_tx(uchar command, const uchar* msg){
+
+template<typename T = int> T UartController::send_tx(uchar command, const uchar* msg){
 
     uchar tx_buffer[13];
     uchar *p_tx_buffer;
