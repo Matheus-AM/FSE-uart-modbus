@@ -1,9 +1,8 @@
 #include <forno.h>
 
-Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
+Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula)), pwm()
 {
     temp_ambiente = get_home_temp_bme280();
-    GpioPWM pwm;
 
     power = 0;
     dash = 0;

@@ -13,7 +13,6 @@ private:
     uchar power;
     uchar dash;
     uchar play;
-    GpioPWM pwm;
 
 
     const static uchar POWER_ON_CODE = 0xA1;
@@ -23,6 +22,7 @@ private:
     const static uchar MENU_CODE = 0xA5;
 
 public:
+    GpioPWM pwm;
     Forno(uchar matricula[4]);
     UartController* uart;    
     void handleUserCmd(int user_cmd);
