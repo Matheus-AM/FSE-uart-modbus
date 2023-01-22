@@ -72,6 +72,7 @@ void Forno::playIt(){
             int idx = 1+(dash_count/120);
             idx = (idx > 9 ? 9 : idx);
             temp_ref = curva.temp[idx];
+            uart->send_tx<float>(SEND_REF_TEMP, &temp_ref);
             pid_atualiza_referencia(temp_ref);
         }
         dash_count++;
@@ -86,6 +87,7 @@ void Forno::playIt(){
     
     temp_self = uart->send_tx<float>(RECV_SELF_TEMP, NULL);
     double controle = pid_controle((double)temp_self);
+    printf("%lf\n", controle);
     int intensity = controle*10;
     if(intensity%10 > 5)intensity++;
     intensity/=10;
