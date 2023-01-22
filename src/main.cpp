@@ -67,7 +67,7 @@ void Forno::handleUserCmd(int user_cmd){
 
 
 int Forno::refreshCmd(){
-    return uart.send_tx<int>(0xc3, NULL);
+    return uart->send_tx<int>(0xc3, NULL);
 }
 
 
