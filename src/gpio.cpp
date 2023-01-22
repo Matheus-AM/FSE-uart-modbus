@@ -13,7 +13,6 @@ GpioPWM::GpioPWM()
 
 int GpioPWM::operator<<(const int intensity_)
 {
-    int direction = 1;
     if (intensity_ < 0)
     {
         if (intensity == -intensity_)
