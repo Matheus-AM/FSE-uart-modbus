@@ -88,7 +88,10 @@ public:
 
         sleep(1);
         //----- CHECK FOR ANY RX BYTES -----
-        return (T)recv_rx(command);
+        T res;
+        int aux = recv_rx(command);
+        memcpy(&res, &aux, 4);
+        return res;
     };
 };
 
