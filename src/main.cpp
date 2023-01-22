@@ -36,10 +36,10 @@ Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
 
     temp_self = uart->send_tx<float>(0xC1, NULL);
     temp_ref = uart->send_tx<float>(0xC2, NULL);
-    uart->send_tx<int>(0xD3, power);
-    uart->send_tx<int>(0xD4, dash);
-    uart->send_tx<int>(0xD5, play);
-    uart->send_tx<int>(0xD6, temp_ambiente);
+    uart->send_tx<int>(0xD3, (uchar*)&power);
+    uart->send_tx<int>(0xD4, (uchar*)&dash);
+    uart->send_tx<int>(0xD5, (uchar*)&play);
+    uart->send_tx<int>(0xD6, (uchar*)&temp_ambiente);
     printf("%f\n", temp_ambiente);
 }
 
