@@ -11,5 +11,5 @@ private:
     int intensity = 0;
 public:
     GpioPWM(void);
-    void operator<<(const int intensity_);
+    int operator<<(const int intensity_);
 };

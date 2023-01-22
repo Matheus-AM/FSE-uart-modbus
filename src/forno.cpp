@@ -1,6 +1,6 @@
 #include <forno.h>
 
-Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula)), pwm()
+Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
 {
     temp_ambiente = get_home_temp_bme280();
 
