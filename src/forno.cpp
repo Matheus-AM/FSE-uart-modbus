@@ -8,6 +8,9 @@ Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
     dash = 0;
     play = 0;
 
+    read_record(&curva);
+    dash_count = 0;
+
     temp_self = uart->send_tx<float>(RECV_SELF_TEMP, NULL);
     temp_ref = uart->send_tx<float>(RECV_REL_TEMP, NULL);
     uart->send_tx<int>(SEND_POW_STATE, (uchar*)&power);
@@ -45,6 +48,7 @@ void Forno::handleUserCmd(int user_cmd){
     case MENU_CODE:
         dash = !dash;
         uart->send_tx<int>(SEND_DASH_STATE, (uchar*)&dash);
+        dash_count = 0;
         break;
     default:
         break;
@@ -61,11 +65,25 @@ int Forno::isPlaying(){
 
 
 void Forno::playIt(){
-    int ref_ = uart->send_tx<float>(RECV_REL_TEMP, NULL);
-    int ref2_ = temp_ref;
-    if(ref_ != ref2_)
-        pid_atualiza_referencia(temp_ref);
-
+    if (!isPlaying()) return;
+    if (dash)
+    {
+        if(dash_count%120 == 0){
+            int idx = 1+(dash_count/120);
+            idx = (idx > 9 ? 9 : idx);
+            temp_ref = curva.temp[idx];
+            pid_atualiza_referencia(temp_ref);
+        }
+        dash_count++;
+    }else{
+        int ref_ = uart->send_tx<float>(RECV_REL_TEMP, NULL);
+        int ref2_ = temp_ref;
+        if(ref_ != ref2_){
+            temp_ref = ref;
+            pid_atualiza_referencia(temp_ref);
+        }
+    }
+    
     temp_self = uart->send_tx<float>(RECV_SELF_TEMP, NULL);
     double controle = pid_controle((double)temp_self);
     int intensity = controle*10;

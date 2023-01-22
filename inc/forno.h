@@ -3,6 +3,8 @@
 #include <i2cbme280.h>
 #include <gpio.h>
 #include <pid.h>
+#include <csv_reader.h>
+
 
 class Forno
 {
@@ -13,7 +15,8 @@ private:
     uchar power;
     uchar dash;
     uchar play;
-
+    struct csv curva;
+    int dash_count;
 
     const static uchar POWER_ON_CODE = 0xA1;
     const static uchar POWER_OFF_CODE = 0xA2;
