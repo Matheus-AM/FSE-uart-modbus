@@ -64,10 +64,10 @@ int Forno::playIt(){
 
     temp_self = uart->send_tx<float>(RECV_SELF_TEMP, NULL);
     double controle = pid_controle((double)temp_self);
-    int res = controle*10;
-    if(res%10 > 5)res++;
-    res/=10;
-    int sinal_controle = pwm<<res;
-    uart->send_tx<uchar>(SEND_CTR, sinal_controle);
+    int intensity = controle*10;
+    if(intensity%10 > 5)intensity++;
+    intensity/=10;
+    int sinal_controle = pwm<<intensity;
+    uart->send_tx<uchar>(SEND_CTR, (uchar*)&sinal_controle);
 
 }
