@@ -72,7 +72,7 @@ void Forno::playIt(){
             int idx = 1+(dash_count/120);
             idx = (idx > 9 ? 9 : idx);
             temp_ref = curva.temp[idx];
-            uart->send_tx<float>(SEND_REF_TEMP, &temp_ref);
+            uart->send_tx<float>(SEND_REF_TEMP, (uchar*)&temp_ref);
             pid_atualiza_referencia(temp_ref);
         }
         dash_count++;
