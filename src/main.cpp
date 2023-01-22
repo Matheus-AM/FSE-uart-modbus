@@ -24,7 +24,7 @@ public:
     Forno(uchar matricula[4]);
     UartController* uart;    
     void handleUserCmd(int user_cmd);
-i   int refreshCmd();
+    int refreshCmd();
 };
 
 Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
