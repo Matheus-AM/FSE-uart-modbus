@@ -24,13 +24,22 @@ public:
     Forno(uchar matricula[4]);
     UartController* uart;    
     void handleUserCmd(int user_cmd);
+i   int refreshCmd();
 };
 
 Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
 {
     temp_ambiente = get_home_temp_bme280();
+    power = 0;
+    dash = 0;
+    play = 0;
+
     temp_self = uart->send_tx<float>(0xC1, NULL);
     temp_ref = uart->send_tx<float>(0xC2, NULL);
+    uart->send_tx<int>(0xD3, power);
+    uart->send_tx<int>(0xD4, dash);
+    uart->send_tx<int>(0xD5, play);
+    uart->send_tx<int>(0xD6, temp_ambiente);
     printf("%f\n", temp_ambiente);
 }
 
@@ -57,6 +66,11 @@ void Forno::handleUserCmd(int user_cmd){
 }
 
 
+int Forno::refreshCmd(){
+    return uart.send_tx(0xc3, NULL);
+}
+
+
 int main(int argc, const char * argv[]) {
     uchar matricula[4] = {0x00, 0x03, 0x00, 0x07};
 
@@ -66,8 +80,8 @@ int main(int argc, const char * argv[]) {
 
     // while (1)
     // {
-    //     int user_cmd = uart.send_tx(0xc3, 0);
-    //     if (user_cmd != -1) forno.handleUserCmd(user_cmd);   
+    int user_cmd = forno.refreshCmd();
+    if (user_cmd != -1) forno.handleUserCmd(user_cmd);   
         
     //     usleep(500000);
     // }
