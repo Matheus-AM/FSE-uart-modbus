@@ -3,6 +3,7 @@
 Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
 {
     temp_ambiente = get_home_temp_bme280();
+    GpioPWM pwm;
 
     power = 0;
     dash = 0;
@@ -55,8 +56,8 @@ int Forno::refreshCmd(){
     return uart->send_tx<int>(RECV_CMD, NULL);
 }
 
-int Forno::playIt(){
-    if(play == 0) return 0;
+void Forno::playIt(){
+    if(play == 0) return;
     int ref_ = uart->send_tx<float>(RECV_REL_TEMP, NULL);
     int ref2_ = temp_ref;
     if(ref_ != ref2_)
@@ -69,5 +70,5 @@ int Forno::playIt(){
     intensity/=10;
     int sinal_controle = pwm<<intensity;
     uart->send_tx<uchar>(SEND_CTR, (uchar*)&sinal_controle);
-
+    return;
 }

@@ -27,5 +27,5 @@ public:
     UartController* uart;    
     void handleUserCmd(int user_cmd);
     int refreshCmd();
-    int playIt();
+    void playIt();
 };
