@@ -56,7 +56,7 @@ int Forno::refreshCmd(){
 }
 
 int Forno::isPlaying(){
-    return play
+    return play;
 }
 
 
