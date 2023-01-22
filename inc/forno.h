@@ -28,4 +28,7 @@ public:
     void handleUserCmd(int user_cmd);
     int refreshCmd();
     void playIt();
+    void stopIt();
+    int isPlaying();
+    void finishIt();
 };

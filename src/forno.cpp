@@ -14,7 +14,6 @@ Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
     uart->send_tx<int>(SEND_DASH_STATE, (uchar*)&dash);
     uart->send_tx<int>(SEND_PLAY_STATE, (uchar*)&play);
     uart->send_tx<int>(SEND_ROOM_TEMP, (uchar*)&temp_ambiente);
-
     printf("temp_self %f\n", temp_self);
     printf("temp_ref %f\n", temp_ref);
     printf("temp_ambiente %f\n", temp_ambiente);
@@ -41,6 +40,7 @@ void Forno::handleUserCmd(int user_cmd){
     case CANCEL_CODE:
         play = 0;
         uart->send_tx<int>(SEND_PLAY_STATE, (uchar*)&play);
+        stopIt();
         break;
     case MENU_CODE:
         dash = !dash;
@@ -55,8 +55,12 @@ int Forno::refreshCmd(){
     return uart->send_tx<int>(RECV_CMD, NULL);
 }
 
+int Forno::isPlaying(){
+    return play
+}
+
+
 void Forno::playIt(){
-    if(play == 0) return;
     int ref_ = uart->send_tx<float>(RECV_REL_TEMP, NULL);
     int ref2_ = temp_ref;
     if(ref_ != ref2_)
@@ -69,5 +73,17 @@ void Forno::playIt(){
     intensity/=10;
     int sinal_controle = pwm<<intensity;
     uart->send_tx<uchar>(SEND_CTR, (uchar*)&sinal_controle);
+    return;
+}
+
+void Forno::stopIt(){
+    int sinal_controle = pwm<<0;
+    uart->send_tx<uchar>(SEND_CTR, (uchar*)&sinal_controle);
+    return;
+}
+
+void Forno::finishIt(){
+    stopIt();
+    delete uart;
     return;
 }
