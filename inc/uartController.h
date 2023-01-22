@@ -6,6 +6,25 @@
 #include <termios.h>        //Used for UART
 #include <helpers.h>
 
+//Solicita Temperatura Interna
+#define RECV_SELF_TEMP = 0xC1;
+//Solicita Temperatura de Referência
+#define RECV_REL_TEMP = 0xC2;
+//Lê comandos do usuário
+#define RECV_CMD = 0xC3;
+//Envia sinal de controle Int (4 bytes)  PID
+#define SEND_CTR = 0xD1;
+//Envia sinal de Referência Float (4 bytes)
+#define SEND_REF_TEMP = 0xD2;
+//Envia Estado do Sistema (Ligado = 1 / Desligado = 0)
+#define SEND_POW_STATE = 0xD3;
+//Modo de Controle da Temperatura de referência (Dashboard = 0 / Curva/Terminal = 1) (1 byte)
+#define SEND_DASH_STATE = 0xD4;
+//Envia Estado de Funcionamento (Funcionando = 1 / Parado = 0)
+#define SEND_PLAY_STATE = 0xD5;
+//Envia Temperatura Ambiente (Float))
+#define SEND_ROOM_TEMP = 0xD6;
+
 class UartController 
 {
 private:
@@ -28,25 +47,7 @@ public:
     UartController(uchar matric[4]);
     void close_it();
 
-    //Solicita Temperatura Interna
-    const static uchar RECV_SELF_TEMP = 0xC1;
-    //Solicita Temperatura de Referência
-    const static uchar RECV_REL_TEMP = 0xC2;
-    //Lê comandos do usuário
-    const static uchar RECV_CMD = 0xC3;
 
-    //Envia sinal de controle Int (4 bytes)  PID
-    const static uchar SEND_CTR = 0xD1;
-    //Envia sinal de Referência Float (4 bytes)
-    const static uchar SEND_REF_TEMP = 0xD2;
-    //Envia Estado do Sistema (Ligado = 1 / Desligado = 0)
-    const static uchar SEND_POW_STATE = 0xD3;
-    //Modo de Controle da Temperatura de referência (Dashboard = 0 / Curva/Terminal = 1) (1 byte)
-    const static uchar SEND_DASH_STATE = 0xD4;
-    //Envia Estado de Funcionamento (Funcionando = 1 / Parado = 0)
-    const static uchar SEND_PLAY_STATE = 0xD5;
-    //Envia Temperatura Ambiente (Float))
-    const static uchar SEND_ROOM_TEMP = 0xD6;
 
     template<typename T = int> 
     T send_tx(uchar command, const uchar* msg){
