@@ -1,4 +1,5 @@
 #include <forno.h>
+#include <signal.h>
 
 uchar interrupt = 0;
 int main(int argc, const char * argv[]) {
