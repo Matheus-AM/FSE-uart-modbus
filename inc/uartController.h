@@ -88,7 +88,7 @@ public:
 
         sleep(1);
         //----- CHECK FOR ANY RX BYTES -----
-        return recv_rx(command);
+        return (T)recv_rx(command);
     };
 };
 

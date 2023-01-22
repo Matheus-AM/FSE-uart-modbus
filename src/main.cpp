@@ -74,7 +74,7 @@ int Forno::refreshCmd(){
 
 
 int main(int argc, const char * argv[]) {
-    uchar matricula[4] = {0x00, 0x03, 0x00, 0x07};
+    uchar matricula[4] = {0, 3, 0, 7};
 
     if (wiringPiSetup() == -1) exit (1);
     Forno forno(matricula);
