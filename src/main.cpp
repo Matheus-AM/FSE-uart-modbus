@@ -40,7 +40,9 @@ Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
     uart->send_tx<int>(0xD4, (uchar*)&dash);
     uart->send_tx<int>(0xD5, (uchar*)&play);
     uart->send_tx<int>(0xD6, (uchar*)&temp_ambiente);
-    printf("%f\n", temp_ambiente);
+    printf("temp_self %f\n", temp_self);
+    printf("temp_ref %f\n", temp_ref);
+    printf("temp_ambiente %f\n", temp_ambiente);
 }
 
 void Forno::handleUserCmd(int user_cmd){
