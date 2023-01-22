@@ -100,7 +100,7 @@ int UartController::recv_rx(uchar command){
         {
             rx_length = read(filestream, (void*)rx_buffer, 255);      //Filestream, buffer to store in, number of bytes to read (max)
             // printf("Erro na leitura.\n"); //An error occured (will occur if there are no bytes)
-            usleep(100000);
+            usleep(10000);
         }
         if (rx_length == 0)
         {

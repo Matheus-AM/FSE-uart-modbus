@@ -84,7 +84,7 @@ public:
             }
         }
 
-        sleep(1);
+        usleep(10000);
         //----- CHECK FOR ANY RX BYTES -----
         T res;
         int aux = recv_rx(command);
