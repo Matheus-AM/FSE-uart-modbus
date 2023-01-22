@@ -13,14 +13,16 @@ GpioPWM::GpioPWM()
 
 int GpioPWM::operator<<(const int intensity_)
 {
+    int direction = 1;
     if (intensity_ < 0)
     {
         if (intensity == -intensity_)
-            return intensity;
+            return intensity_;
         intensity = (-intensity_ < RANGE ? -intensity_ : RANGE);
         intensity = (-intensity_ > 40 ? -intensity_ : 40);
         softPwmWrite(fanPin, intensity); /* change the value of PWM */
         softPwmWrite(resistPin, 0);      /* change the value of PWM */
+        return -intensity;
     }
     else
     {
