@@ -79,7 +79,7 @@ void Forno::playIt(){
         int ref_ = uart->send_tx<float>(RECV_REL_TEMP, NULL);
         int ref2_ = temp_ref;
         if(ref_ != ref2_){
-            temp_ref = ref;
+            temp_ref = ref_;
             pid_atualiza_referencia(temp_ref);
         }
     }
