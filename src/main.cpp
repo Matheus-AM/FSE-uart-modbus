@@ -1,6 +1,8 @@
 #include <forno.h>
 #include <signal.h>
 
+void sighandler(int);
+
 uchar interrupt = 0;
 int main(int argc, const char * argv[]) {
     uchar matricula[4] = {0, 3, 0, 7};
