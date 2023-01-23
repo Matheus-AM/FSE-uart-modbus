@@ -71,6 +71,7 @@ void Forno::playIt(){
         if(dash_count%120 == 0){
             int idx = 1+(dash_count/120);
             idx = (idx > 9 ? 9 : idx);
+            printf("curva: %d\n", idx);
             temp_ref = curva.temp[idx];
             printf("curva: %f\n", temp_ref);
             uart->send_tx<float>(SEND_REF_TEMP, (uchar*)&temp_ref);
@@ -101,6 +102,8 @@ void Forno::playIt(){
 void Forno::stopIt(){
     int sinal_controle = pwm<<0;
     uart->send_tx<uchar>(SEND_CTR, (uchar*)&sinal_controle);
+    uart->send_tx<uchar>(SEND_PLAY_STATE, (uchar*)&sinal_controle);
+    uart->send_tx<uchar>(SEND_POW_STATE, (uchar*)&sinal_controle);
     return;
 }
 
