@@ -11,8 +11,8 @@ Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
     read_record(&curva);
     for (int i = 0; i < 10; i++)
     {
-        float ff = curva.temp[i];
-        printf("%f ", ff);
+        int ff = curva.temp[i];
+        printf("%d ", ff);
     }
     printf("\n");
 
