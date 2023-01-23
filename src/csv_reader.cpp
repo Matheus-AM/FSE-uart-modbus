@@ -13,7 +13,6 @@ void read_record(struct csv* row )
     // as String Vector
     std::string line, word;
     std::getline(fin, line);
-    printf("%s",line);
     int count = 0;
     while (std::getline(fin, line)) {
   
@@ -23,7 +22,7 @@ void read_record(struct csv* row )
         (*row).time[count] = std::stoi(word);
         std::getline(s, word, ',');
         (*row).temp[count] = std::stoi(word);
-        printf("a %d ", (*row).temp[count]);
+        printf("a %d ", (*row).time[count]);
         count++;
 
     }
