@@ -15,7 +15,7 @@ Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
         printf("%d ", ff);
     }
     printf("\n");
-
+    exit(0);
     dash_count = 0;
 
     temp_self = uart->send_tx<float>(RECV_SELF_TEMP, NULL);
