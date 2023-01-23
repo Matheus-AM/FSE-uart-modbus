@@ -22,7 +22,7 @@ void read_record(struct csv* row )
         (*row).time[count] = std::stoi(word);
         std::getline(s, word, ',');
         (*row).temp[count] = std::stoi(word);
-        printf("%d ", (*row).temp[count]);
+        printf("a %d ", (*row).temp[count]);
         count++;
 
     }
