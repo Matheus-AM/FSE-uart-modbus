@@ -147,7 +147,7 @@ float get_home_temp_bme280()
     if ((id.fd = open(i2c_path, O_RDWR)) < 0)
     {
         fprintf(stderr, "Failed to open the i2c bus %s\n", i2c_path);
-        exit(1);
+        return 25;
     }
 
     id.dev_addr = BME280_I2C_ADDR_PRIM;
@@ -156,7 +156,7 @@ float get_home_temp_bme280()
     if (ioctl(id.fd, I2C_SLAVE, id.dev_addr) < 0)
     {
         fprintf(stderr, "Failed to acquire bus access and/or talk to slave.\n");
-        exit(1);
+        return 25;
     }
 
 // #endif
@@ -176,14 +176,14 @@ float get_home_temp_bme280()
     if (rslt != BME280_OK)
     {
         fprintf(stderr, "Failed to initialize the device (code %+d).\n", rslt);
-        exit(1);
+        return 25;
     }
     float home_temp;
     rslt = stream_sensor_data_forced_mode(&dev, &home_temp);
     if (rslt != BME280_OK)
     {
         fprintf(stderr, "Failed to stream sensor data (code %+d).\n", rslt);
-        exit(1);
+        return 25;
     }
 
     return home_temp;
