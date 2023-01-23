@@ -9,6 +9,13 @@ Forno::Forno(uchar matricula[4]) : uart(new UartController(matricula))
     play = 0;
 
     read_record(&curva);
+    for (int i = 0; i < 10; i++)
+    {
+        float ff = curva.temp[i];
+        printf("%f ", ff);
+    }
+    printf("\n");
+
     dash_count = 0;
 
     temp_self = uart->send_tx<float>(RECV_SELF_TEMP, NULL);
