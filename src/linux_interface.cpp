@@ -176,7 +176,7 @@ float get_home_temp_bme280()
     if (rslt != BME280_OK)
     {
         fprintf(stderr, "Failed to initialize the device (code %+d).\n", rslt);
-        printf("Sensor BME280 não encontrado! (default = 25)\n")
+        printf("Sensor BME280 não encontrado! (default = 25)\n");
         return 25;
     }
     float home_temp;
